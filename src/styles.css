@@ -1,14 +1,19 @@
 @import "tailwindcss";
 
-.btn {
-  @apply bg-blue-500 text-white font-bold py-2 px-4 rounded;
-}
-
-.btn-default {
-  @apply bg-gray-200 text-gray-800;
-}
+@custom-variant dark (&:where(.dark, .dark *));
 
 body {
   @apply bg-gray-50 text-gray-900 font-sans antialiased min-h-screen
-    leading-normal tracking-normal;
+    leading-normal tracking-normal transition-colors duration-200 dark:bg-gray-900 dark:text-gray-100;
+}
+
+.theme-toggle {
+  @apply fixed top-4 right-4 p-2 rounded-full
+    bg-gray-200 dark:bg-gray-700
+    hover:bg-gray-300 dark:hover:bg-gray-600
+    transition-colors duration-200;
+}
+
+.theme-toggle-icon {
+  @apply w-5 h-5 text-gray-800 dark:text-yellow-300;
 }

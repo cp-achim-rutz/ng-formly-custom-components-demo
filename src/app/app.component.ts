@@ -1,10 +1,11 @@
 import {Component} from '@angular/core';
 import {FormGroup, ReactiveFormsModule, UntypedFormGroup} from '@angular/forms';
 import {FormlyForm, FormlyFormOptions} from '@ngx-formly/core';
+import {ThemeToggleComponent} from './theme-toggle.component';
 
 @Component({
   selector: 'app-root',
-  imports: [ReactiveFormsModule, FormlyForm],
+  imports: [ReactiveFormsModule, FormlyForm, ThemeToggleComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
