@@ -1,0 +1,8 @@
+<div class="flex flex-row items-center w-full py-1">
+  <label class="w-3/12">{{ props.label }}</label>
+  <select class="w-9/12" (change)="onChange($event)">
+    @for (option of props.options; track option.label) {
+      <option [label]="option.label" [value]="option.value"></option>
+    }
+  </select>
+</div>
