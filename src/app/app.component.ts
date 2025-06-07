@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {FormGroup, ReactiveFormsModule, UntypedFormGroup} from '@angular/forms';
-import {FormlyForm, FormlyFormOptions, FormlyModule} from '@ngx-formly/core';
+import {FormlyForm, FormlyFormOptions} from '@ngx-formly/core';
 
 @Component({
   selector: 'app-root',
