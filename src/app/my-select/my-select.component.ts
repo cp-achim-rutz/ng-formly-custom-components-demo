@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {FieldType, FieldTypeConfig, FormlyFieldConfig} from '@ngx-formly/core';
+import { Component } from '@angular/core';
+import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 
 interface SelectProps {
   label?: string;
@@ -10,7 +10,7 @@ interface SelectProps {
   selector: 'my-select',
   imports: [],
   templateUrl: './my-select.component.html',
-  styleUrl: './my-select.component.css'
+  styleUrl: './my-select.component.css',
 })
 export class MySelectComponent extends FieldType<FieldTypeConfig<SelectProps>> {
   onChange(event: Event) {

@@ -1,14 +1,18 @@
 <div class="w-full py-1">
-  @if ( props.label) {
-    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ props.label }}</label>
+  @if (props.label) {
+    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{
+      props.label
+    }}</label>
   }
   <div class="flex flex-row gap-1" role="radiogroup">
     @for (option of props.options; track option.label) {
       <div
-        [class]="'button px-4 py-2 rounded-lg transition-all duration-200 ' +
-               (formControl.value === option.value ?
-               'bg-blue-600 text-white pointer-events-none ' :
-               'bg-gray-50 hover:bg-gray-100 text-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white cursor-pointer')"
+        [class]="
+          'button px-4 py-2 rounded-lg transition-all duration-200 ' +
+          (formControl.value === option.value
+            ? 'bg-blue-600 text-white pointer-events-none '
+            : 'bg-gray-50 hover:bg-gray-100 text-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white cursor-pointer')
+        "
         [attr.aria-checked]="formControl.value === option.value"
         role="radio"
         [class.disabled]="formControl.disabled"

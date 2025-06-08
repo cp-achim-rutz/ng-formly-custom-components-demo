@@ -6,14 +6,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 type SelectProps = {
   label?: string;
   options?: { label: string; value: string }[];
-}
+};
 
 @Component({
   selector: 'app-switch-select',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, FormlyModule],
   templateUrl: './switch-select.component.html',
-  styleUrl: './switch-select.component.css'
+  styleUrl: './switch-select.component.css',
 })
 export class SwitchSelectComponent extends FieldType<FieldTypeConfig<SelectProps>> {
   onSelect(value: any): void {

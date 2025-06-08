@@ -1,7 +1,7 @@
-import {Component} from '@angular/core';
-import {FormGroup, ReactiveFormsModule, UntypedFormGroup} from '@angular/forms';
-import {FormlyForm, FormlyFormOptions} from '@ngx-formly/core';
-import {ThemeToggleComponent} from './theme-toggle.component';
+import { Component } from '@angular/core';
+import { FormGroup, ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
+import { FormlyForm, FormlyFormOptions } from '@ngx-formly/core';
+import { ThemeToggleComponent } from './theme-toggle.component';
 
 enum ArticleType {
   'Finance and insurance' = 'finance',
@@ -27,8 +27,7 @@ interface FormModel {
 })
 export class AppComponent {
   form = new UntypedFormGroup({});
-  model:FormModel = {
-  };
+  model: FormModel = {};
   options: FormlyFormOptions = {};
   fields = [
     {
@@ -38,7 +37,7 @@ export class AppComponent {
         label: 'Customer Type',
         required: true,
         options: [
-          { label: 'Please select a value', value: undefined},
+          { label: 'Please select a value', value: undefined },
           { label: 'Regular', value: 'regular' },
           { label: 'Premium', value: 'premium' },
         ],
@@ -94,19 +93,19 @@ export class AppComponent {
       },
       expressionProperties: {
         'model.total': (model: typeof this.model) => {
-          if(model.price && model.quantity) {
+          if (model.price && model.quantity) {
             if (model.discountCode && model.customerType === 'premium') {
               return model.price * model.quantity * 0.9; // 10% discount for premium customers
             } else {
               return model.price * model.quantity; // No discount
             }
-          } else return undefined
+          } else return undefined;
         },
       },
     },
   ];
 
-  onSubmit(_model:FormGroup) {
+  onSubmit(_model: FormGroup) {
     console.log(JSON.stringify(this.model));
   }
 }
