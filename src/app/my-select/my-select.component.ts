@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FieldType, FieldTypeConfig, FormlyValidationMessage } from '@ngx-formly/core';
 
 interface SelectProps {
   label?: string;
@@ -8,7 +8,7 @@ interface SelectProps {
 
 @Component({
   selector: 'my-select',
-  imports: [],
+  imports: [FormlyValidationMessage],
   templateUrl: './my-select.component.html',
   styleUrl: './my-select.component.css',
 })

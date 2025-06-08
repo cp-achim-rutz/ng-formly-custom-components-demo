@@ -27,6 +27,20 @@ export const appConfig: ApplicationConfig = {
             component: SwitchSelectComponent,
           },
         ],
+        validators: [
+          {
+            name: 'required',
+            validation: (control) => {
+              return control.value ? null : { required: true };
+            },
+          },
+        ],
+        validationMessages: [
+          {
+            name: 'required',
+            message: (_error, fieldConfig) => `${fieldConfig?.props?.label} is required.`,
+          },
+        ],
       },
     ]),
   ],

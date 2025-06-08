@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup, ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { FormlyForm, FormlyFormOptions } from '@ngx-formly/core';
 import { ThemeToggleComponent } from './theme-toggle.component';
+import { numberValidator } from './validators/number-validator';
 
 enum ArticleType {
   'Finance and insurance' = 'finance',
@@ -52,7 +53,6 @@ export class AppComponent {
           label,
           value,
         })),
-        required: true,
       },
     },
     {
@@ -68,17 +68,31 @@ export class AppComponent {
     {
       key: 'price',
       type: 'my-text',
+      validators: {
+        numberValidator,
+      },
       templateOptions: {
         label: 'Price',
         type: 'number',
+        required: true,
+        placeholder: 'Enter price',
+        min: 1,
+        max: 10000,
       },
     },
     {
       key: 'quantity',
       type: 'my-text',
+      validators: {
+        numberValidator,
+      },
       templateOptions: {
         label: 'Quantity',
         type: 'number',
+        required: true,
+        placeholder: 'Enter quantity',
+        min: 1,
+        max: 1000,
       },
     },
     {
@@ -93,7 +107,10 @@ export class AppComponent {
       },
       expressionProperties: {
         'model.total': (model: typeof this.model) => {
-          if (model.price && model.quantity) {
+          const isNumber = !(
+            Number.isNaN(Number(model.price)) || Number.isNaN(Number(model.quantity))
+          );
+          if (isNumber && model.price && model.quantity) {
             if (model.discountCode && model.customerType === 'premium') {
               return model.price * model.quantity * 0.9; // 10% discount for premium customers
             } else {
@@ -106,6 +123,11 @@ export class AppComponent {
   ];
 
   onSubmit(_model: FormGroup) {
-    console.log(JSON.stringify(this.model));
+    if (!this.form.touched) this.form.markAllAsTouched();
+    if (this.form.valid) {
+      console.log('Form Submitted', this.model);
+    } else {
+      console.error('Form is invalid or not touched', this.form.errors);
+    }
   }
 }
