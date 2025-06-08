@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup, ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { FormlyForm, FormlyFormOptions } from '@ngx-formly/core';
 import { ThemeToggleComponent } from './theme-toggle.component';
-import { numberValidator } from './validators/number-validator';
+import { numberValidator } from './fc-validators/number-validator';
 
 enum ArticleType {
   'Finance and insurance' = 'finance',
@@ -33,7 +33,7 @@ export class AppComponent {
   fields = [
     {
       key: 'customerType',
-      type: 'my-select',
+      type: 'fc-select',
       templateOptions: {
         label: 'Customer Type',
         required: true,
@@ -46,7 +46,7 @@ export class AppComponent {
     },
     {
       key: 'articleType',
-      type: 'switch-select',
+      type: 'fc-switch-select',
       props: {
         label: 'Article Type',
         options: Object.entries(ArticleType).map(([label, value]) => ({
@@ -57,7 +57,7 @@ export class AppComponent {
     },
     {
       key: 'discountCode',
-      type: 'my-text',
+      type: 'fc-text',
       expressions: {
         hide: 'model.customerType !== "premium"',
       },
@@ -67,7 +67,7 @@ export class AppComponent {
     },
     {
       key: 'price',
-      type: 'my-text',
+      type: 'fc-text',
       validators: {
         numberValidator,
       },
@@ -82,7 +82,7 @@ export class AppComponent {
     },
     {
       key: 'quantity',
-      type: 'my-text',
+      type: 'fc-text',
       validators: {
         numberValidator,
       },
@@ -97,7 +97,7 @@ export class AppComponent {
     },
     {
       key: 'total',
-      type: 'my-text',
+      type: 'fc-text',
       expressions: {
         hide: '!model.price || !model.quantity',
       },

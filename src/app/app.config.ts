@@ -1,11 +1,10 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideFormlyCore } from '@ngx-formly/core';
-
 import { routes } from './app.routes';
-import { MyTextComponent } from './my-text/my-text.component';
-import { MySelectComponent } from './my-select/my-select.component';
-import { SwitchSelectComponent } from './switch-select/switch-select.component';
+import { FcTextComponent } from './fc-text/fc-text.component';
+import { FcSelectComponent } from './fc-select/fc-select.component';
+import { FcSwitchSelectComponent } from './fc-switch-select/fc-switch-select.component';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,16 +14,16 @@ export const appConfig: ApplicationConfig = {
       {
         types: [
           {
-            name: 'my-select',
-            component: MySelectComponent,
+            name: 'fc-select',
+            component: FcSelectComponent,
           },
           {
-            name: 'my-text',
-            component: MyTextComponent,
+            name: 'fc-text',
+            component: FcTextComponent,
           },
           {
-            name: 'switch-select',
-            component: SwitchSelectComponent,
+            name: 'fc-switch-select',
+            component: FcSwitchSelectComponent,
           },
         ],
         validators: [

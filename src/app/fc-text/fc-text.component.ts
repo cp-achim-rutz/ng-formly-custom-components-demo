@@ -8,11 +8,11 @@ import {
 import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'my-text',
+  selector: 'fc-text',
   imports: [ReactiveFormsModule, FormlyValidationMessage, FormlyAttributes],
-  templateUrl: 'my-text.component.html',
+  templateUrl: 'fc-text.component.html',
 })
-export class MyTextComponent extends FieldType<FieldTypeConfig> {
+export class FcTextComponent extends FieldType<FieldTypeConfig> {
   onChange(_event: Event) {
     this.formControl.markAsDirty();
     this.formControl.markAsTouched();

@@ -9,13 +9,13 @@ type SelectProps = {
 };
 
 @Component({
-  selector: 'app-switch-select',
+  selector: 'fc-switch-select',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, FormlyModule],
-  templateUrl: './switch-select.component.html',
-  styleUrl: './switch-select.component.css',
+  templateUrl: './fc-switch-select.component.html',
+  styleUrl: './fc-switch-select.component.css',
 })
-export class SwitchSelectComponent extends FieldType<FieldTypeConfig<SelectProps>> {
+export class FcSwitchSelectComponent extends FieldType<FieldTypeConfig<SelectProps>> {
   onSelect(value: any): void {
     this.formControl.setValue(value);
     this.formControl.markAsDirty(); // Mark the control as dirty

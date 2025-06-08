@@ -7,12 +7,12 @@ interface SelectProps {
 }
 
 @Component({
-  selector: 'my-select',
+  selector: 'fc-select',
   imports: [FormlyValidationMessage],
-  templateUrl: './my-select.component.html',
-  styleUrl: './my-select.component.css',
+  templateUrl: './fc-select.component.html',
+  styleUrl: './fc-select.component.css',
 })
-export class MySelectComponent extends FieldType<FieldTypeConfig<SelectProps>> {
+export class FcSelectComponent extends FieldType<FieldTypeConfig<SelectProps>> {
   onChange(event: Event) {
     this.formControl.setValue((event.target as HTMLSelectElement).value);
     this.formControl.markAsDirty();
