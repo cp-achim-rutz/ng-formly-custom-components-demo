@@ -5,6 +5,7 @@ import {provideFormlyCore} from '@ngx-formly/core';
 import {routes} from './app.routes';
 import {MyTextComponent} from './my-text/my-text.component';
 import {MySelectComponent} from './my-select/my-select.component';
+import {SwitchSelectComponent} from './switch-select/switch-select.component';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes),
@@ -17,5 +18,9 @@ export const appConfig: ApplicationConfig = {
           name: 'my-text',
           component: MyTextComponent,
         },
-      ],}])]
+        {
+          name: 'switch-select',
+          component: SwitchSelectComponent,
+        },
+],}])]
 };

@@ -3,6 +3,22 @@ import {FormGroup, ReactiveFormsModule, UntypedFormGroup} from '@angular/forms';
 import {FormlyForm, FormlyFormOptions} from '@ngx-formly/core';
 import {ThemeToggleComponent} from './theme-toggle.component';
 
+enum ArticleType {
+  'Finance and insurance' = 'finance',
+  Technology = 'technology',
+  Health = 'health',
+  Education = 'education',
+}
+
+interface FormModel {
+  price?: number;
+  quantity?: number;
+  articleType?: ArticleType;
+  discountCode?: string;
+  customerType?: 'regular' | 'premium';
+  total?: number;
+}
+
 @Component({
   selector: 'app-root',
   imports: [ReactiveFormsModule, FormlyForm, ThemeToggleComponent],
@@ -11,11 +27,7 @@ import {ThemeToggleComponent} from './theme-toggle.component';
 })
 export class AppComponent {
   form = new UntypedFormGroup({});
-  model = {
-    price: 10,
-    quantity: 2,
-    discountCode: '',
-    customerType: 'regular',
+  model:FormModel = {
   };
   options: FormlyFormOptions = {};
   fields = [
@@ -26,16 +38,29 @@ export class AppComponent {
         label: 'Customer Type',
         required: true,
         options: [
+          { label: 'Please select a value', value: undefined},
           { label: 'Regular', value: 'regular' },
           { label: 'Premium', value: 'premium' },
         ],
       },
     },
     {
+      key: 'articleType',
+      type: 'switch-select',
+      props: {
+        label: 'Article Type',
+        options: Object.entries(ArticleType).map(([label, value]) => ({
+          label,
+          value,
+        })),
+        required: true,
+      },
+    },
+    {
       key: 'discountCode',
       type: 'my-text',
       expressions: {
-        hide: 'model.customerType === "regular"',
+        hide: 'model.customerType !== "premium"',
       },
       templateOptions: {
         label: 'Discount Code',
@@ -69,11 +94,13 @@ export class AppComponent {
       },
       expressionProperties: {
         'model.total': (model: typeof this.model) => {
-          if(model.discountCode && model.customerType === 'premium') {
-            return model.price * model.quantity * 0.9; // 10% discount for premium customers
-          } else {
-            return model.price * model.quantity; // No discount
-          }
+          if(model.price && model.quantity) {
+            if (model.discountCode && model.customerType === 'premium') {
+              return model.price * model.quantity * 0.9; // 10% discount for premium customers
+            } else {
+              return model.price * model.quantity; // No discount
+            }
+          } else return undefined
         },
       },
     },
