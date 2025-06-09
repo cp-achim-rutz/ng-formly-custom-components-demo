@@ -16,8 +16,9 @@ type SelectProps = {
   styleUrl: './fc-switch-select.component.css',
 })
 export class FcSwitchSelectComponent extends FieldType<FieldTypeConfig<SelectProps>> {
-  onSelect(value: any): void {
-    this.formControl.setValue(value);
+  onSelect(event: Event, value: string): void {
+    event.preventDefault();
+    this.formControl.setValue(value, { onlySelf: true });
     this.formControl.markAsDirty(); // Mark the control as dirty
   }
 }

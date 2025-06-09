@@ -15,6 +15,5 @@ import { ReactiveFormsModule } from '@angular/forms';
 export class FcTextComponent extends FieldType<FieldTypeConfig> {
   onChange(_event: Event) {
     this.formControl.markAsDirty();
-    this.formControl.markAsTouched();
   }
 }

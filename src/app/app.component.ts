@@ -38,9 +38,9 @@ export class AppComponent {
         label: 'Customer Type',
         required: true,
         options: [
-          { label: 'Please select a value', value: undefined },
-          { label: 'Regular', value: 'regular' },
-          { label: 'Premium', value: 'premium' },
+          { label: 'Please select a value', value: undefined, default: true },
+          { label: 'Regular', value: 'regular', default: false },
+          { label: 'Premium', value: 'premium', default: false },
         ],
       },
     },
@@ -123,9 +123,10 @@ export class AppComponent {
   ];
 
   onSubmit(_model: FormGroup) {
-    if (!this.form.touched) this.form.markAllAsTouched();
+    console.log(this.model);
+    this.form.markAllAsTouched();
     if (this.form.valid) {
-      console.log('Form Submitted', this.model);
+      alert('Form Submitted:' + JSON.stringify(this.model, null, 2));
     } else {
       console.error('Form is invalid or not touched', this.form.errors);
     }

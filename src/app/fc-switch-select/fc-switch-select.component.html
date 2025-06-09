@@ -1,8 +1,8 @@
 <div class="w-full py-1">
   @if (props.label) {
     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{
-      props.label
-    }}</label>
+        props.label
+      }}</label>
   }
   <div class="flex flex-row gap-1" role="radiogroup">
     @for (option of props.options; track option.label) {
@@ -16,7 +16,7 @@
         [attr.aria-checked]="formControl.value === option.value"
         role="radio"
         [class.disabled]="formControl.disabled"
-        (click)="onSelect(option.value)"
+        (click)="onSelect($event, option.value)"
       >
         {{ option.label }}
       </div>

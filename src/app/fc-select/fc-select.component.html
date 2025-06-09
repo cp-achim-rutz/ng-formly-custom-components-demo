@@ -3,11 +3,19 @@
       props.label
     }}</label>
   <select
+    [formControl]="formControl"
+    [formlyAttributes]="field"
     class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
     (change)="onChange($event)"
   >
     @for (option of props.options; track option.label) {
-      <option [label]="option.label" [value]="option.value"></option>
+      <option
+        [label]="option.label"
+        [value]="option.value"
+        [defaultSelected]="option.default"
+        [selected]="formControl.value === option.value"
+      >
+      </option>
     }
   </select>
   @if (formControl.touched && formControl.errors) {
