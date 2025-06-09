@@ -2,9 +2,10 @@ import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideFormlyCore } from '@ngx-formly/core';
 import { routes } from './app.routes';
-import { FcTextComponent } from './fc-text/fc-text.component';
-import { FcSelectComponent } from './fc-select/fc-select.component';
-import { FcSwitchSelectComponent } from './fc-switch-select/fc-switch-select.component';
+import { FcSelectComponent } from './controls/fc-select/fc-select.component';
+import { FcTextComponent } from './controls/fc-text/fc-text.component';
+import { FcSwitchSelectComponent } from './controls/fc-switch-select/fc-switch-select.component';
+import { CardComponent } from './wrappers/card/card.component';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -39,6 +40,9 @@ export const appConfig: ApplicationConfig = {
             name: 'required',
             message: (_error, fieldConfig) => `${fieldConfig?.props?.label} is required.`,
           },
+        ],
+        wrappers: [
+          { name: 'card-wrapper', component:  CardComponent },
         ],
       },
     ]),
