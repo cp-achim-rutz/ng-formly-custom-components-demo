@@ -16,9 +16,9 @@ interface FormModel {
     price?: number;
     quantity?: number;
     articleType?: ArticleType;
-    discountCode?: string;
     customerType?: 'regular' | 'premium';
   };
+  discountCode?: string;
   total?: number;
 }
 
@@ -65,17 +65,6 @@ export class AppComponent {
           },
         },
         {
-          key: 'discountCode',
-          type: 'fc-text',
-          templateOptions: {
-            label: 'Discount Code',
-          },
-          expressions: {
-            // TODO: this should work but it does not
-            hide: "!model.inputs?.customerType || model.inputs.customerType !== 'premium'",
-          },
-        },
-        {
           key: 'price',
           type: 'fc-text',
           validators: {
@@ -108,6 +97,17 @@ export class AppComponent {
       ],
     },
     {
+      key: 'discountCode',
+      type: 'fc-text',
+      templateOptions: {
+        label: 'Discount Code',
+      },
+      expressions: {
+        // TODO: now it does work???
+        hide: "!model.inputs?.customerType || model.inputs.customerType !== 'premium'",
+      },
+    },
+    {
       key: 'total',
       type: 'fc-text',
       expressions: {
@@ -125,7 +125,7 @@ export class AppComponent {
           const isNumber = !(Number.isNaN(price) || Number.isNaN(quantity));
           if (isNumber) {
             let total = price * quantity;
-            if (model.inputs.discountCode && model.inputs.customerType === 'premium') {
+            if (model.discountCode && model.inputs.customerType === 'premium') {
               total = price * quantity * 0.9; // 10% discount for premium customers
             }
             return total;
