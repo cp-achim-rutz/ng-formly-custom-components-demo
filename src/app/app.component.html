@@ -1,12 +1,13 @@
-<form class="formContainer" [formGroup]="form" (ngSubmit)="onSubmit($event)">
-  <formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>
-  <div class="flex flex-row justify-end gap-x-5">
-    <button class="submitForm" type="reset" (click)="onReset()">Reset</button>
-    <button
-      [disabled]="!form.valid"
-      type="submit"
-      class="submitForm"
-    >
+<form class="formContainer" [formGroup]="form()" (ngSubmit)="onSubmit($event)">
+  <formly-form [form]="form()" [fields]="fields" [model]="model" [options]="options"></formly-form>
+  <div class="flex justify-end gap-x-5">
+    <button class="px-4 py-2 rounded-lg transition-all duration-200 bg-gray-200 hover:bg-gray-300 text-gray-800
+      dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white cursor-pointer"
+      type="reset" (click)="onReset()">
+      Reset
+    </button>
+    <button type="submit" class="submitForm px-4 py-2 rounded-lg transition-all duration-200 bg-gray-200
+     hover:bg-gray-300 text-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white cursor-pointer">
       Submit
     </button>
   </div>

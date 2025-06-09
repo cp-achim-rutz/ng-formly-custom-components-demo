@@ -1,4 +1,4 @@
-import { Component, effect, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, signal } from '@angular/core';
 import { FormGroup, ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { FormlyForm, FormlyFormOptions } from '@ngx-formly/core';
 import { ThemeToggleComponent } from './theme-toggle.component';
@@ -19,7 +19,9 @@ interface FormModel {
     customerType?: 'regular' | 'premium';
     discountCode?: string;
   };
-  total?: number;
+  result: {
+    total?: number;
+  };
 }
 
 @Component({
@@ -27,6 +29,7 @@ interface FormModel {
   imports: [ReactiveFormsModule, FormlyForm, ThemeToggleComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
   constructor() {
@@ -35,9 +38,10 @@ export class AppComponent {
     });
   }
 
-  form = new UntypedFormGroup({});
+  form = signal(new UntypedFormGroup({}));
   model: FormModel = {
     inputs: {},
+    result: {},
   };
   options: FormlyFormOptions = {
     formState: {
@@ -105,7 +109,7 @@ export class AppComponent {
           type: 'fc-text',
           validators: {
             numberValidator,
-            betweenValidator: betweenValidator(1,50),
+            betweenValidator: betweenValidator(1, 50),
           },
           templateOptions: {
             label: 'Quantity',
@@ -117,39 +121,50 @@ export class AppComponent {
       ],
     },
     {
-      key: 'total',
-      type: 'fc-text',
-      expressions: {
-        hide: '!model?.inputs?.price || !model?.inputs?.quantity',
-      },
-      templateOptions: {
-        label: 'Total',
-        disabled: true,
-      },
-      expressionProperties: {
-        'model.total': (model: FormModel) => {
-          if (!model.inputs) return undefined;
-          const price = Number(model.inputs?.price);
-          const quantity = Number(model.inputs?.quantity);
-          const isNumber = !(Number.isNaN(price) || Number.isNaN(quantity));
-          if (isNumber) {
-            let total = price * quantity;
-            if (model.inputs.discountCode && model.inputs.customerType === 'premium') {
-              total = price * quantity * 0.9; // 10% discount for premium customers
-            }
-            return total;
-          } else return undefined;
+      key: 'result',
+      wrappers: ['card-wrapper'],
+      props: { label: 'Result' },
+      fieldGroup: [
+        {
+          key: 'total',
+          type: 'fc-text',
+          expressions: {
+            hide: 'formState.model().inputs?.price === undefined || formState.model().inputs?.quantity === undefined',
+          },
+          templateOptions: {
+            label: 'Total',
+            disabled: true,
+          },
+          expressionProperties: {
+            'model.total': (_model: FormModel, formState: typeof this.options.formState) => {
+              const currentModel = formState.model();
+              if (!currentModel.inputs) return undefined;
+              const price = Number(currentModel.inputs?.price);
+              const quantity = Number(currentModel.inputs?.quantity);
+              const isNumber = !(Number.isNaN(price) || Number.isNaN(quantity));
+              if (isNumber) {
+                let total = price * quantity;
+                if (
+                  currentModel.inputs.discountCode &&
+                  currentModel.inputs.customerType === 'premium'
+                ) {
+                  total = price * quantity * 0.9; // 10% discount for premium customers
+                }
+                return total;
+              } else return undefined;
+            },
+          },
         },
-      },
+      ],
     },
   ];
 
   onSubmit(_model: FormGroup) {
-    this.form.markAllAsTouched();
-    if (this.form.valid) {
+    this.form().markAllAsTouched();
+    if (this.form().valid) {
       alert('Form Submitted:' + JSON.stringify(this.model, null, 2));
     } else {
-      console.error('Form is invalid or not touched', this.form.errors);
+      console.error('Form is invalid or not touched', this.form().errors);
     }
   }
 
