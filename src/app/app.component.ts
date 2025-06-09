@@ -1,8 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, signal } from '@angular/core';
 import { FormGroup, ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { FormlyForm, FormlyFormOptions } from '@ngx-formly/core';
 import { ThemeToggleComponent } from './theme-toggle.component';
-import { numberValidator } from './validators/fc-validators/number-validator';
+import { betweenValidator, numberValidator } from './validators/fc-validators/number-validator';
 
 enum ArticleType {
   'Finance and insurance' = 'finance',
@@ -19,7 +19,9 @@ interface FormModel {
     customerType?: 'regular' | 'premium';
     discountCode?: string;
   };
-  total?: number;
+  result: {
+    total?: number;
+  };
 }
 
 @Component({
@@ -27,16 +29,23 @@ interface FormModel {
   imports: [ReactiveFormsModule, FormlyForm, ThemeToggleComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
-  form = new UntypedFormGroup({});
-  model:FormModel ={
-    inputs: {
-    },
+  constructor() {
+    effect(() => {
+      console.log(this.options.formState.model());
+    });
+  }
+
+  form = signal(new UntypedFormGroup({}));
+  model: FormModel = {
+    inputs: {},
+    result: {},
   };
   options: FormlyFormOptions = {
     formState: {
-      model: this.model,
+      model: signal(this.model),
     },
   };
   fields = [
@@ -74,7 +83,7 @@ export class AppComponent {
           type: 'fc-text',
           expressions: {
             // NOTE: this expression is evaluated on the level of the inputs field group; if parents need to be accessed, things get more complicated
-            hide: 'model.customerType !== "premium"'
+            hide: 'model.customerType !== "premium"',
           },
           templateOptions: {
             label: 'Discount Code',
@@ -100,53 +109,66 @@ export class AppComponent {
           type: 'fc-text',
           validators: {
             numberValidator,
+            betweenValidator: betweenValidator(1, 50),
           },
           templateOptions: {
             label: 'Quantity',
             type: 'number',
             required: true,
             placeholder: 'Enter quantity',
-            min: 1,
-            max: 1000,
           },
         },
       ],
     },
     {
-      key: 'total',
-      type: 'fc-text',
-      expressions: {
-        hide: '!model?.inputs?.price || !model?.inputs?.quantity',
-      },
-      templateOptions: {
-        label: 'Total',
-        disabled: true,
-      },
-      expressionProperties: {
-        'model.total': (model: FormModel) => {
-          if (!model.inputs) return undefined;
-          const price = Number(model.inputs?.price);
-          const quantity = Number(model.inputs?.quantity);
-          const isNumber = !(Number.isNaN(price) || Number.isNaN(quantity));
-          if (isNumber) {
-            let total = price * quantity;
-            if (model.inputs.discountCode && model.inputs.customerType === 'premium') {
-              total = price * quantity * 0.9; // 10% discount for premium customers
-            }
-            return total;
-          } else return undefined;
+      key: 'result',
+      wrappers: ['card-wrapper'],
+      props: { label: 'Result' },
+      fieldGroup: [
+        {
+          key: 'total',
+          type: 'fc-text',
+          expressions: {
+            hide: 'formState.model().inputs?.price === undefined || formState.model().inputs?.quantity === undefined',
+          },
+          templateOptions: {
+            label: 'Total',
+            disabled: true,
+          },
+          expressionProperties: {
+            'model.total': (_model: FormModel, formState: typeof this.options.formState) => {
+              const currentModel = formState.model();
+              if (!currentModel.inputs) return undefined;
+              const price = Number(currentModel.inputs?.price);
+              const quantity = Number(currentModel.inputs?.quantity);
+              const isNumber = !(Number.isNaN(price) || Number.isNaN(quantity));
+              if (isNumber) {
+                let total = price * quantity;
+                if (
+                  currentModel.inputs.discountCode &&
+                  currentModel.inputs.customerType === 'premium'
+                ) {
+                  total = price * quantity * 0.9; // 10% discount for premium customers
+                }
+                return total;
+              } else return undefined;
+            },
+          },
         },
-      },
+      ],
     },
   ];
 
   onSubmit(_model: FormGroup) {
-    console.log(this.model);
-    this.form.markAllAsTouched();
-    if (this.form.valid) {
+    this.form().markAllAsTouched();
+    if (this.form().valid) {
       alert('Form Submitted:' + JSON.stringify(this.model, null, 2));
     } else {
-      console.error('Form is invalid or not touched', this.form.errors);
+      console.error('Form is invalid or not touched', this.form().errors);
     }
+  }
+
+  onReset() {
+    this.options.formState.model(this.model);
   }
 }
