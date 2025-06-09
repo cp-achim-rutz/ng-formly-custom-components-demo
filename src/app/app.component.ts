@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup, ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
+import { FormGroup, isFormGroup, ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { FormlyForm, FormlyFormOptions } from '@ngx-formly/core';
 import { ThemeToggleComponent } from './theme-toggle.component';
 import { numberValidator } from './fc-validators/number-validator';
@@ -131,4 +131,6 @@ export class AppComponent {
       console.error('Form is invalid or not touched', this.form.errors);
     }
   }
+
+  protected readonly isFormGroup = isFormGroup;
 }
