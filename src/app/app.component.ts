@@ -2,7 +2,7 @@ import { Component, effect, signal } from '@angular/core';
 import { FormGroup, ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { FormlyForm, FormlyFormOptions } from '@ngx-formly/core';
 import { ThemeToggleComponent } from './theme-toggle.component';
-import { numberValidator } from './validators/fc-validators/number-validator';
+import { betweenValidator, numberValidator } from './validators/fc-validators/number-validator';
 
 enum ArticleType {
   'Finance and insurance' = 'finance',
@@ -32,13 +32,12 @@ export class AppComponent {
   constructor() {
     effect(() => {
       console.log(this.options.formState.model());
-    })
+    });
   }
 
   form = new UntypedFormGroup({});
-  model:FormModel ={
-    inputs: {
-    },
+  model: FormModel = {
+    inputs: {},
   };
   options: FormlyFormOptions = {
     formState: {
@@ -80,7 +79,7 @@ export class AppComponent {
           type: 'fc-text',
           expressions: {
             // NOTE: this expression is evaluated on the level of the inputs field group; if parents need to be accessed, things get more complicated
-            hide: 'model.customerType !== "premium"'
+            hide: 'model.customerType !== "premium"',
           },
           templateOptions: {
             label: 'Discount Code',
@@ -106,14 +105,13 @@ export class AppComponent {
           type: 'fc-text',
           validators: {
             numberValidator,
+            betweenValidator: betweenValidator(1,50),
           },
           templateOptions: {
             label: 'Quantity',
             type: 'number',
             required: true,
             placeholder: 'Enter quantity',
-            min: 1,
-            max: 1000,
           },
         },
       ],
