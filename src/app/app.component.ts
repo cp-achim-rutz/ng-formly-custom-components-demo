@@ -17,8 +17,8 @@ interface FormModel {
     quantity?: number;
     articleType?: ArticleType;
     customerType?: 'regular' | 'premium';
+    discountCode?: string;
   };
-  discountCode?: string;
   total?: number;
 }
 
@@ -31,9 +31,14 @@ interface FormModel {
 export class AppComponent {
   form = new UntypedFormGroup({});
   model:FormModel ={
-    inputs: {},
+    inputs: {
+    },
   };
-  options: FormlyFormOptions = {};
+  options: FormlyFormOptions = {
+    formState: {
+      model: this.model,
+    },
+  };
   fields = [
     {
       key: 'inputs',
@@ -62,6 +67,17 @@ export class AppComponent {
               label,
               value,
             })),
+          },
+        },
+        {
+          key: 'discountCode',
+          type: 'fc-text',
+          expressions: {
+            // NOTE: this expression is evaluated on the level of the inputs field group; if parents need to be accessed, things get more complicated
+            hide: 'model.customerType !== "premium"'
+          },
+          templateOptions: {
+            label: 'Discount Code',
           },
         },
         {
@@ -97,17 +113,6 @@ export class AppComponent {
       ],
     },
     {
-      key: 'discountCode',
-      type: 'fc-text',
-      templateOptions: {
-        label: 'Discount Code',
-      },
-      expressions: {
-        // TODO: now it does work???
-        hide: "!model.inputs?.customerType || model.inputs.customerType !== 'premium'",
-      },
-    },
-    {
       key: 'total',
       type: 'fc-text',
       expressions: {
@@ -125,7 +130,7 @@ export class AppComponent {
           const isNumber = !(Number.isNaN(price) || Number.isNaN(quantity));
           if (isNumber) {
             let total = price * quantity;
-            if (model.discountCode && model.inputs.customerType === 'premium') {
+            if (model.inputs.discountCode && model.inputs.customerType === 'premium') {
               total = price * quantity * 0.9; // 10% discount for premium customers
             }
             return total;
