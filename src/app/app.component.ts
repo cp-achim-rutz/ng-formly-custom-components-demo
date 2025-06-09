@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, effect, signal } from '@angular/core';
 import { FormGroup, ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { FormlyForm, FormlyFormOptions } from '@ngx-formly/core';
 import { ThemeToggleComponent } from './theme-toggle.component';
@@ -29,6 +29,12 @@ interface FormModel {
   styleUrl: './app.component.css',
 })
 export class AppComponent {
+  constructor() {
+    effect(() => {
+      console.log(this.options.formState.model());
+    })
+  }
+
   form = new UntypedFormGroup({});
   model:FormModel ={
     inputs: {
@@ -36,7 +42,7 @@ export class AppComponent {
   };
   options: FormlyFormOptions = {
     formState: {
-      model: this.model,
+      model: signal(this.model),
     },
   };
   fields = [
@@ -141,12 +147,15 @@ export class AppComponent {
   ];
 
   onSubmit(_model: FormGroup) {
-    console.log(this.model);
     this.form.markAllAsTouched();
     if (this.form.valid) {
       alert('Form Submitted:' + JSON.stringify(this.model, null, 2));
     } else {
       console.error('Form is invalid or not touched', this.form.errors);
     }
+  }
+
+  onReset() {
+    this.options.formState.model(this.model);
   }
 }

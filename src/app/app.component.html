@@ -1,8 +1,9 @@
 <form class="formContainer" [formGroup]="form" (ngSubmit)="onSubmit($event)">
   <formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>
-  <div class="flex justify-end">
+  <div class="flex flex-row justify-end gap-x-5">
+    <button class="submitForm" type="reset" (click)="onReset()">Reset</button>
     <button
-
+      [disabled]="!form.valid"
       type="submit"
       class="submitForm"
     >
