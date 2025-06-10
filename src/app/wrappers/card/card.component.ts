@@ -5,9 +5,8 @@ import { FieldWrapper } from '@ngx-formly/core';
   selector: 'app-card',
   imports: [],
   templateUrl: './card.component.html',
-  styleUrl: './card.component.css'
+  styleUrl: './card.component.scss',
 })
 export class CardComponent extends FieldWrapper {
   isExpanded = signal(true);
-
 }

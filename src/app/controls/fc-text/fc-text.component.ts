@@ -11,6 +11,7 @@ import { ReactiveFormsModule } from '@angular/forms';
   selector: 'fc-text',
   imports: [ReactiveFormsModule, FormlyValidationMessage, FormlyAttributes],
   templateUrl: 'fc-text.component.html',
+  styleUrl: 'fc-text.component.scss',
 })
 export class FcTextComponent extends FieldType<FieldTypeConfig> {
   onChange(_event: Event) {

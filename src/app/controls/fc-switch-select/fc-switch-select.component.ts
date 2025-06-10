@@ -13,7 +13,7 @@ type SelectProps = {
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, FormlyModule],
   templateUrl: './fc-switch-select.component.html',
-  styleUrl: './fc-switch-select.component.css',
+  styleUrl: './fc-switch-select.component.scss',
 })
 export class FcSwitchSelectComponent extends FieldType<FieldTypeConfig<SelectProps>> {
   onSelect(event: Event, value: string): void {

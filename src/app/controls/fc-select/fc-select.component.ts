@@ -20,7 +20,7 @@ interface SelectProps {
   selector: 'fc-select',
   imports: [FormlyValidationMessage, FormlyAttributes, ReactiveFormsModule],
   templateUrl: './fc-select.component.html',
-  styleUrl: './fc-select.component.css',
+  styleUrl: './fc-select.component.scss',
 })
 export class FcSelectComponent extends FieldType<FieldTypeConfig<SelectProps>> {
   onChange(event: Event) {
